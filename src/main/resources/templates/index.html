@@ -1,0 +1,10 @@
+<html layout:decorator="layout">
+
+<div layout:fragment="content">
+	<h1 class="text-center">Daily wisdom</h1>
+	<p class="text-center"><img height="500" th:src="@{'/images/' + ${sentence.category.image}}" /></p>
+	<h2 class="text-center"><a title="See sentence details" th:href="@{/dw/{slug}(slug=${sentence.slug})}" th:text="${sentence.joke}"></a></h2>
+	<h3 class="text-center">Added by: <span th:text="${sentence.author.fullName}"></span></h3>
+</div>
+
+</html>

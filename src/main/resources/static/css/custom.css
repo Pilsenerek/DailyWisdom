@@ -1,0 +1,16 @@
+.test {
+	color: red;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+#wrap {
+  min-height: 95%;
+}
+
+.url {
+	width: 800px;
+}
