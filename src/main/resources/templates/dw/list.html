@@ -1,0 +1,32 @@
+<html layout:decorator="layout">
+<head>
+	<title>Daily wisdoms list</title>
+</head>
+
+<div layout:fragment="content">
+
+	<h1>Daily wisdoms list</h1>
+	
+	<table class="table table-bordered table-striped">
+		<thead class="thead-default">
+		<tr>
+			<th>ID</th>
+			<th>Text</th>
+		</tr>
+		</thead>
+		<tr th:each="dailyWisdom : ${page.content}">
+   			<td>
+   				<a title="See sentence details" th:href="@{/dw/{id}(id=${dailyWisdom.id})}" th:text="${dailyWisdom.id}"></a>
+   			</td>
+   			<td>
+   				<a title="See sentence details" th:href="@{/dw/{slug}(slug=${dailyWisdom.slug})}" th:text="${dailyWisdom.joke}"></a>
+   			</td>
+		</tr>
+	</table>
+
+	<!-- Pagination Bar -->
+	<th:block th:include="common/pagination :: pagination"></th:block>
+
+</div>
+
+</html>

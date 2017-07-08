@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +21,14 @@ public class DailyWisdomController {
 	
 	
 	@RequestMapping("/dw")
-	public List<DailyWisdom> getDailyWisdoms(){
+	public String list(Map<String, Object> model, Pageable pageable){
+		Page<DailyWisdom> dailyWisdoms = this.dailyWisdomService.getDailyWisdoms(pageable);
+		//model.put("dailyWisdoms", dailyWisdoms);
+		model.put("page", dailyWisdoms);
+		model.put("persons", dailyWisdoms);
+		//dailyWisdoms.
 		
-		return this.dailyWisdomService.getDailyWisdoms();
+		return "dw/list";
 	}
 		
 	@RequestMapping("/dw/{id:[\\d]+}")

@@ -3,6 +3,8 @@ package test.controller.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +22,9 @@ public class DailyWisdomRestController {
 	
 	
 	@RequestMapping("/cnj")
-	public List<DailyWisdom> getDailyWisdoms(){
+	public Page<DailyWisdom> getDailyWisdoms(Pageable pageable){
 		
-		return this.dailyWisdomService.getDailyWisdoms();
+		return this.dailyWisdomService.getDailyWisdoms(pageable);
 	}
 		
 	@RequestMapping("/cnj/{id}")

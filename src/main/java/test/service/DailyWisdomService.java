@@ -3,6 +3,9 @@ package test.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import test.entity.DailyWisdom;
@@ -14,8 +17,10 @@ public class DailyWisdomService {
 	@Autowired
 	private DailyWisdomRepository dailyWisdomRepository;
 	
-	public List<DailyWisdom> getDailyWisdoms(){
-		List<DailyWisdom> sentences =  (List<DailyWisdom>)dailyWisdomRepository.findAll();
+	//public List<DailyWisdom> getDailyWisdoms(Pageable pageable){
+	public Page<DailyWisdom> getDailyWisdoms(Pageable pageable){
+		//List<DailyWisdom> sentences =  (List<DailyWisdom>)dailyWisdomRepository.findAll(pageable);
+		Page<DailyWisdom> sentences =  dailyWisdomRepository.findAll(pageable);
 		
 		return sentences;
 	}
@@ -51,6 +56,13 @@ public class DailyWisdomService {
 		DailyWisdom sentence =  dailyWisdomRepository.findOneBySlug(slug);
 		
 		return sentence;
+	}
+	
+	public List<DailyWisdom> findOneOrderByRand(){
+		Pageable one = new PageRequest(0, 1);
+		List<DailyWisdom> sentences = this.dailyWisdomRepository.findAllOrderByRand(one);
+		
+		return sentences;
 	}
 	
 
