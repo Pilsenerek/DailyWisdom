@@ -1,4 +1,4 @@
-package test.service;
+package pl.pils.dw.service;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import test.entity.DailyWisdom;
-import test.repository.DailyWisdomRepository;
+import pl.pils.dw.entity.DailyWisdom;
+import pl.pils.dw.repository.DailyWisdomRepository;
 
 @Service
 public class DailyWisdomService {
@@ -17,9 +17,7 @@ public class DailyWisdomService {
 	@Autowired
 	private DailyWisdomRepository dailyWisdomRepository;
 	
-	//public List<DailyWisdom> getDailyWisdoms(Pageable pageable){
 	public Page<DailyWisdom> getDailyWisdoms(Pageable pageable){
-		//List<DailyWisdom> sentences =  (List<DailyWisdom>)dailyWisdomRepository.findAll(pageable);
 		Page<DailyWisdom> sentences =  dailyWisdomRepository.findAll(pageable);
 		
 		return sentences;

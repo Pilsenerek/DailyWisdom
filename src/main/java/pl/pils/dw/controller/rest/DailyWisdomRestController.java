@@ -1,4 +1,4 @@
-package test.controller.rest;
+package pl.pils.dw.controller.rest;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import test.entity.DailyWisdom;
-import test.service.DailyWisdomService;
+import pl.pils.dw.entity.DailyWisdom;
+import pl.pils.dw.service.DailyWisdomService;
 
 @RestController
 public class DailyWisdomRestController {

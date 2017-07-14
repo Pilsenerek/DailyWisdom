@@ -1,8 +1,8 @@
-package test.repository;
+package pl.pils.dw.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import test.entity.Category;
+import pl.pils.dw.entity.Category;
 
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 

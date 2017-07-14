@@ -1,4 +1,4 @@
-package test.fixturesData;
+package pl.pils.dw.fixturesData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,12 +16,12 @@ import org.springframework.stereotype.Component;
 import com.github.javafaker.Faker;
 import com.github.slugify.Slugify;
 
-import test.entity.Category;
-import test.entity.DailyWisdom;
-import test.entity.User;
-import test.repository.CategoryRepository;
-import test.repository.DailyWisdomRepository;
-import test.repository.UserRepository;
+import pl.pils.dw.entity.Category;
+import pl.pils.dw.entity.DailyWisdom;
+import pl.pils.dw.entity.User;
+import pl.pils.dw.repository.CategoryRepository;
+import pl.pils.dw.repository.DailyWisdomRepository;
+import pl.pils.dw.repository.UserRepository;
 
 
 @Component

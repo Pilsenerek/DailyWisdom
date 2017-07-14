@@ -1,4 +1,4 @@
-package test.entity;
+package pl.pils.dw.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,31 +11,45 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class User {
+public class Category {
 
 	@Id
 	@GeneratedValue
 	private Long id;
-	private String email;
-	private String firstName;
-	private String lastName;
-	@OneToMany(mappedBy="author")
+	private String name;
+	private String image;
+	@OneToMany(mappedBy="category")
 	@JsonIgnore
 	private Set<DailyWisdom> dailyWisdoms = new HashSet<DailyWisdom>();
 	
-	public User() {
+	public Category() {
 		
 	}
-	
-	public User(String email, String firstName, String lastName) {
+
+	public Category(String name, String image) {
 		super();
-		this.email = email;
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.name = name;
+		this.image = image;
 	}
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public Set<DailyWisdom> getDailyWisdoms() {
@@ -54,35 +68,7 @@ public class User {
 		this.dailyWisdoms.remove(dailyWisdom);
 	}
 	
-	public String getEmail() {
-		return email;
-	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
-	public String getFullName(){
-		
-		return this.firstName.concat(" ").concat(this.lastName);
-	}
-	
 	
 
 }

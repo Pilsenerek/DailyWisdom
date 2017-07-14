@@ -1,8 +1,8 @@
-package test.repository;
+package pl.pils.dw.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import test.entity.User;
+import pl.pils.dw.entity.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 

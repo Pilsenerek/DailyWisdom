@@ -10,16 +10,40 @@
 	<table class="table table-bordered table-striped">
 		<thead class="thead-default">
 		<tr>
-			<th>ID</th>
-			<th>Text</th>
+			<th class="text-nowrap">ID
+				<a class="btn btn-secondary btn-sm" th:classappend="${sort.equals('id')} ? 'active' : ''" role="button" th:href="${sortUrls.id}">
+					<i class="fa" th:classappend="${order.equals('ASC')} ? 'fa-sort-numeric-asc' : 'fa-sort-numeric-desc'" aria-hidden="true"></i>
+				</a>
+			</th>
+			<th class="text-nowrap">Text
+				<a class="btn btn-secondary btn-sm" th:classappend="${sort.equals('text')} ? 'active' : ''" role="button" th:href="${sortUrls.text}">
+					<i class="fa" th:classappend="${order.equals('ASC')} ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" aria-hidden="true"></i>
+				</a>
+			</th>
+			<th class="text-nowrap">Category
+				<a class="btn btn-secondary btn-sm" th:classappend="${sort.equals('category')} ? 'active' : ''" th:href="${sortUrls.category}">
+					<i class="fa" th:classappend="${order.equals('ASC')} ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" aria-hidden="true"></i>
+				</a>
+			</th>
+			<th class="text-nowrap">Author
+				<a class="btn btn-secondary btn-sm" th:classappend="${sort.equals('author')} ? 'active' : ''" th:href="${sortUrls.author}">
+					<i class="fa" th:classappend="${order.equals('ASC')} ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" aria-hidden="true"></i>
+				</a>
+			</th>
 		</tr>
 		</thead>
 		<tr th:each="dailyWisdom : ${page.content}">
-   			<td>
+   			<td class="middle">
    				<a title="See sentence details" th:href="@{/dw/{id}(id=${dailyWisdom.id})}" th:text="${dailyWisdom.id}"></a>
    			</td>
-   			<td>
+   			<td class="middle">
    				<a title="See sentence details" th:href="@{/dw/{slug}(slug=${dailyWisdom.slug})}" th:text="${dailyWisdom.joke}"></a>
+   			</td>
+   			<td class="text-center middle">
+   				<img height="50" th:src="@{'/images/' + ${dailyWisdom.category.image}}" th:title="${dailyWisdom.category.name}" />
+   			</td>
+   			<td class="middle">
+   				<a class="text-nowrap" th:text="${dailyWisdom.author.fullName}"></a>
    			</td>
 		</tr>
 	</table>

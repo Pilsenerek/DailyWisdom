@@ -1,4 +1,4 @@
-package test.repository;
+package pl.pils.dw.repository;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import test.entity.DailyWisdom;
+import pl.pils.dw.entity.DailyWisdom;
 
 public interface DailyWisdomRepository extends JpaRepository<DailyWisdom, Long> {
 

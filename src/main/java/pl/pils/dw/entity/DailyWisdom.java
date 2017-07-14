@@ -1,4 +1,4 @@
-package test.entity;
+package pl.pils.dw.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

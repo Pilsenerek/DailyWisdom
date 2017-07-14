@@ -1,12 +1,13 @@
-package test.service;
+package pl.pils.dw.service;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import test.entity.DailyWisdom;
-import test.entity.User;
-import test.repository.UserRepository;
+
+import pl.pils.dw.entity.DailyWisdom;
+import pl.pils.dw.entity.User;
+import pl.pils.dw.repository.UserRepository;
 
 @Service
 public class UserService {
@@ -18,17 +19,17 @@ public class UserService {
 		return (List<User>)userRepository.findAll();
 	}
 	
-	public List<test.dto.User> getUsersDTO() {
+	public List<pl.pils.dw.dto.User> getUsersDTO() {
 		List<User> users = this.getUsers();
-		List<test.dto.User> usersDTO = new ArrayList<>();
+		List<pl.pils.dw.dto.User> usersDTO = new ArrayList<>();
 		for (User user : users) {
-			test.dto.User userDTO = new test.dto.User();
+			pl.pils.dw.dto.User userDTO = new pl.pils.dw.dto.User();
 			userDTO.id = user.getId();
 			userDTO.email = user.getEmail();
 			userDTO.firstName = user.getFirstName();
 			userDTO.lastName = user.getLastName();
 			for (DailyWisdom cnj : user.getDailyWisdoms()) {
-				test.dto.DailyWisdom cnjDTO = new test.dto.DailyWisdom();
+				pl.pils.dw.dto.DailyWisdom cnjDTO = new pl.pils.dw.dto.DailyWisdom();
 				cnjDTO.id = cnj.getId();
 				cnjDTO.joke = cnj.getJoke();
 				cnjDTO.slug = cnj.getSlug();
@@ -41,15 +42,15 @@ public class UserService {
 		return usersDTO;
 	}
 	
-	public test.dto.User getUserDTO(Long id) {
+	public pl.pils.dw.dto.User getUserDTO(Long id) {
 		User user = this.getUser(id);
-		test.dto.User userDTO = new test.dto.User();
+		pl.pils.dw.dto.User userDTO = new pl.pils.dw.dto.User();
 		userDTO.id = user.getId();
 		userDTO.email = user.getEmail();
 		userDTO.firstName = user.getFirstName();
 		userDTO.lastName = user.getLastName();
 		for (DailyWisdom cnj : user.getDailyWisdoms()) {
-			test.dto.DailyWisdom cnjDTO = new test.dto.DailyWisdom();
+			pl.pils.dw.dto.DailyWisdom cnjDTO = new pl.pils.dw.dto.DailyWisdom();
 			cnjDTO.id = cnj.getId();
 			cnjDTO.joke = cnj.getJoke();
 			cnjDTO.slug = cnj.getSlug();

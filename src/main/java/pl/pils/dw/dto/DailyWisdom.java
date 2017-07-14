@@ -1,4 +1,4 @@
-package test.dto;
+package pl.pils.dw.dto;
 
 public class DailyWisdom {
 
