@@ -1,6 +1,5 @@
 package pl.pils.dw.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,22 +20,24 @@ public class SortUrlService {
 	@Autowired
 	private HttpServletRequest httpServletRequest;
 	
-	public SortView getSortView(ArrayList<String> sortKeys) {
+	public SortView getSortView(Map<String, String> sortKeys) {
 		SortView sortView = new SortView(
 				this.getSortUrls(sortKeys),
 				this.getOrder(),
-				this.getSort(sortKeys)
+				this.getSort(sortKeys),
+				this.getField(sortKeys)
 		);
 		
 		return sortView;
 	}
 	
-	private Map<String, String> getSortUrls(ArrayList<String> sortKeys){
+	//@todo add list of maintain params
+	private Map<String, String> getSortUrls(Map<String, String> sortKeys){
 		Map<String, String> sortUrls = new HashMap<>();
-		for(String key : sortKeys){
-			UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(this.getFullURL(this.httpServletRequest));
-			String url = uriComponentsBuilder.replaceQueryParam(SORT_NAME, key).replaceQueryParam(ORDER_NAME, this.getInverseOrder()).toUriString();
-			sortUrls.put(key, url);
+		for(Map.Entry<String, String> entry : sortKeys.entrySet()){
+			UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(this.getFullURL(this.httpServletRequest, false));
+			String url = uriComponentsBuilder.replaceQueryParam(SORT_NAME, entry.getKey()).replaceQueryParam(ORDER_NAME, this.getInverseOrder()).toUriString();
+			sortUrls.put(entry.getKey(), url);
 		}
 		
 		return sortUrls;
@@ -51,13 +52,19 @@ public class SortUrlService {
 		return order;
 	}
 	
-	private String getSort(ArrayList<String> sortKeys){
+	private String getSort(Map<String, String> sortKeys){
 		String sort = this.httpServletRequest.getParameter(SORT_NAME);
 		if(sort == null){
-			sort = sortKeys.get(0);
+			sort = sortKeys.keySet().iterator().next();
 		}
 		
 		return sort;
+	}
+	
+	private String getField(Map<String, String> sortKeys){
+		String sort = this.getSort(sortKeys);
+		
+		return sortKeys.get(sort);
 	}
 	
 	private String getInverseOrder(){
@@ -71,9 +78,12 @@ public class SortUrlService {
 		return order;
 	}
 	
-	private String getFullURL(HttpServletRequest request) {
+	private String getFullURL(HttpServletRequest request, Boolean withQueryString) {
 	    StringBuffer requestURL = request.getRequestURL();
-	    String queryString = request.getQueryString();
+	    String queryString = null;
+	    if(withQueryString){
+	    	queryString = request.getQueryString();
+	    }
 	    if (queryString == null) {
 	    	
 	        return requestURL.toString();

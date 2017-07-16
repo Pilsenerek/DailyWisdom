@@ -1,14 +1,15 @@
 package pl.pils.dw.controller.web;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +29,22 @@ public class DailyWisdomController {
 	
 	@RequestMapping("/dw")
 	public String list(Map<String, Object> model, Pageable pageable){
-		Page<DailyWisdom> dailyWisdoms = this.dailyWisdomService.getDailyWisdoms(pageable);
-		ArrayList<String> sortKeys = new ArrayList<String>(Arrays.asList("id", "text", "category", "author"));
+		//@todo separate sort definitions
+		Map<String, String> sortKeys = new LinkedHashMap<String, String>();
+		sortKeys.put("id", "id"); //first = default sort key
+		sortKeys.put("text", "joke");
+		sortKeys.put("category", "category.name");
+		sortKeys.put("author", "author.lastName");
+		
 		SortView sortView = this.sortUrlService.getSortView(sortKeys);
+		final PageRequest page = new PageRequest(
+				  pageable.getPageNumber(),
+				  pageable.getPageSize(),
+				  Direction.fromString(sortView.getOrder()),
+				  sortView.getField()
+				);
+		
+		Page<DailyWisdom> dailyWisdoms = this.dailyWisdomService.getDailyWisdoms(page);
 		
 		model.put("page", dailyWisdoms);
 		model.put("persons", dailyWisdoms);

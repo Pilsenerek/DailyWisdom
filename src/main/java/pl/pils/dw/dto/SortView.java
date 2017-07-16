@@ -9,12 +9,23 @@ public class SortView {
 	private String order;
 	
 	private String key;
+	
+	private String field;
 
-	public SortView(Map<String, String> sortUrls, String order, String key) {
+	public SortView(Map<String, String> sortUrls, String order, String key, String field) {
 		super();
 		this.sortUrls = sortUrls;
 		this.order = order;
 		this.key = key;
+		this.field = field;
+	}
+	
+	public String getField() {
+		return field;
+	}
+	
+	public void setField(String field) {
+		this.field = field;
 	}
 
 	public Map<String, String> getSortUrls() {
