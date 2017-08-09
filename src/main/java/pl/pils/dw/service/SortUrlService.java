@@ -1,6 +1,7 @@
 package pl.pils.dw.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +21,9 @@ public class SortUrlService {
 	@Autowired
 	private HttpServletRequest httpServletRequest;
 	
-	public SortView getSortView(Map<String, String> sortKeys) {
+	public SortView getSortView(Map<String, String> sortKeys, List<String> keepKeys) {
 		SortView sortView = new SortView(
-				this.getSortUrls(sortKeys),
+				this.getSortUrls(sortKeys, keepKeys),
 				this.getOrder(),
 				this.getSort(sortKeys),
 				this.getField(sortKeys)
@@ -31,13 +32,22 @@ public class SortUrlService {
 		return sortView;
 	}
 	
-	//@todo add list of maintain params
-	private Map<String, String> getSortUrls(Map<String, String> sortKeys){
+	private Map<String, String> getSortUrls(Map<String, String> sortKeys, List<String> keepKeys){
 		Map<String, String> sortUrls = new HashMap<>();
 		for(Map.Entry<String, String> entry : sortKeys.entrySet()){
 			UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(this.getFullURL(this.httpServletRequest, false));
-			String url = uriComponentsBuilder.replaceQueryParam(SORT_NAME, entry.getKey()).replaceQueryParam(ORDER_NAME, this.getInverseOrder()).toUriString();
-			sortUrls.put(entry.getKey(), url);
+			uriComponentsBuilder
+				.replaceQueryParam(SORT_NAME, entry.getKey())
+				.replaceQueryParam(ORDER_NAME, this.getInverseOrder())
+			;
+			//add maintain params
+			for (String keepKey : keepKeys) {
+				String requestKeepValue = this.httpServletRequest.getParameter(keepKey);
+				if (requestKeepValue != null) {
+					uriComponentsBuilder.replaceQueryParam(keepKey, requestKeepValue);
+				}
+			}
+			sortUrls.put(entry.getKey(), uriComponentsBuilder.toUriString());
 		}
 		
 		return sortUrls;

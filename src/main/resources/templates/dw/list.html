@@ -7,7 +7,13 @@
 
 	<h1>Daily wisdoms list</h1>
 	
-	<table class="table table-bordered table-striped">
+	<form class="form-inline top-5" action="#" th:object="${searchForm}" method="get">
+    	<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="search" placeholder="search text" th:field="*{search}" />
+		<button type="submit" class="btn btn-primary">Search</button>
+		<a th:href="@{/dw}" class="btn btn-primary ml-1">Reset</a>
+	</form>
+	
+	<table class="table table-bordered table-striped top-5">
 		<thead class="thead-default">
 		<tr>
 			<th class="text-nowrap">ID
@@ -32,6 +38,7 @@
 			</th>
 		</tr>
 		</thead>
+		<tbody>
 		<tr th:each="dailyWisdom : ${page.content}">
    			<td class="middle">
    				<a title="See sentence details" th:href="@{/dw/{id}(id=${dailyWisdom.id})}" th:text="${dailyWisdom.id}"></a>
@@ -46,10 +53,12 @@
    				<a class="text-nowrap" th:text="${dailyWisdom.author.fullName}"></a>
    			</td>
 		</tr>
+		</tbody>
 	</table>
 
 	<!-- Pagination Bar -->
-	<th:block th:include="common/pagination :: pagination"></th:block>
+	<th:block th:if='${page.hasContent()}' th:include="common/pagination :: pagination"></th:block>
+	<p th:if='${!page.hasContent()}'>There are no jokes to show.</p>
 
 </div>
 

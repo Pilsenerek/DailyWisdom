@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import pl.pils.dw.dto.DailyWisdomSearch;
 import pl.pils.dw.entity.DailyWisdom;
 import pl.pils.dw.repository.DailyWisdomRepository;
 
@@ -18,9 +19,20 @@ public class DailyWisdomService {
 	private DailyWisdomRepository dailyWisdomRepository;
 	
 	public Page<DailyWisdom> getDailyWisdoms(Pageable pageable){
-		Page<DailyWisdom> sentences =  dailyWisdomRepository.findAll(pageable);
+		Page<DailyWisdom> sentences =  this.dailyWisdomRepository.findAll(pageable);
 		
 		return sentences;
+	}
+	
+	public Page<DailyWisdom> getDailyWisdoms(Pageable pageable, DailyWisdomSearch search){
+		if (search.getSearch() == null) {
+
+			return this.dailyWisdomRepository.findAll(pageable);
+
+		} else {
+
+			return this.dailyWisdomRepository.findByJokeContaining(search.getSearch(), pageable);
+		}
 	}
 	
 	public DailyWisdom getDailyWisdom(Long id){
@@ -45,13 +57,13 @@ public class DailyWisdomService {
 	}
 
 	public List<DailyWisdom> getDailyWisdomByUserId(Long id) {
-		List<DailyWisdom> sentences =  (List<DailyWisdom>)dailyWisdomRepository.findByAuthorId(id);
+		List<DailyWisdom> sentences =  (List<DailyWisdom>)this.dailyWisdomRepository.findByAuthorId(id);
 		
 		return sentences;
 	}
 	
 	public DailyWisdom getDailyWisdomBySlug(String slug) {
-		DailyWisdom sentence =  dailyWisdomRepository.findOneBySlug(slug);
+		DailyWisdom sentence =  this.dailyWisdomRepository.findOneBySlug(slug);
 		
 		return sentence;
 	}

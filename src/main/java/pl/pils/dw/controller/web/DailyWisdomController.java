@@ -1,5 +1,7 @@
 package pl.pils.dw.controller.web;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import pl.pils.dw.dto.DailyWisdomSearch;
 import pl.pils.dw.dto.SortView;
 import pl.pils.dw.entity.DailyWisdom;
 import pl.pils.dw.service.DailyWisdomService;
@@ -28,15 +32,15 @@ public class DailyWisdomController {
 	private SortUrlService sortUrlService;
 	
 	@RequestMapping("/dw")
-	public String list(Map<String, Object> model, Pageable pageable){
+	public String list(@ModelAttribute DailyWisdomSearch search, Map<String, Object> model, Pageable pageable){
 		//@todo separate sort definitions
 		Map<String, String> sortKeys = new LinkedHashMap<String, String>();
 		sortKeys.put("id", "id"); //first = default sort key
 		sortKeys.put("text", "joke");
 		sortKeys.put("category", "category.name");
 		sortKeys.put("author", "author.lastName");
-		
-		SortView sortView = this.sortUrlService.getSortView(sortKeys);
+		List<String> keepKeys = new ArrayList<String>(Arrays.asList("search"));
+		SortView sortView = this.sortUrlService.getSortView(sortKeys, keepKeys);
 		final PageRequest page = new PageRequest(
 				  pageable.getPageNumber(),
 				  pageable.getPageSize(),
@@ -44,13 +48,14 @@ public class DailyWisdomController {
 				  sortView.getField()
 				);
 		
-		Page<DailyWisdom> dailyWisdoms = this.dailyWisdomService.getDailyWisdoms(page);
+		Page<DailyWisdom> dailyWisdoms = this.dailyWisdomService.getDailyWisdoms(page, search);
 		
 		model.put("page", dailyWisdoms);
 		model.put("persons", dailyWisdoms);
 		model.put("sortUrls", sortView.getSortUrls());
 		model.put("order", sortView.getOrder());
 		model.put("sort", sortView.getKey());
+		model.put("searchForm", search);
 		
 		return "dw/list";
 	}
