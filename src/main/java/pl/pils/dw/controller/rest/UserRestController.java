@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.pils.dw.service.UserService;
 
 @RestController
-public class UserController {
+public class UserRestController {
 
 	@Autowired
 	private UserService userService;

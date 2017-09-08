@@ -6,8 +6,12 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.4.RELEASE</version>
+    <version>1.5.6.RELEASE</version>
   </parent>
+  
+  <properties>
+	  <java.version>1.8</java.version>
+  </properties>
   
   <dependencies>
 	<dependency>
@@ -37,7 +41,16 @@
       <artifactId>bootstrap</artifactId>
       <version>4.0.0-alpha.6-1</version>
 	</dependency>
-	
+	<dependency>
+    	<groupId>org.springframework.boot</groupId>
+       	<artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    
+    <!-- provide sec: tag in thymeleaf -->
+ 	<dependency>
+    	<groupId>org.thymeleaf.extras</groupId>
+    	<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+	</dependency>
 	
 	<!-- Utilities -->
 	<dependency>
@@ -51,15 +64,11 @@
 	  <version>2.1.9</version>
     </dependency>
     
-    
   </dependencies>
-  
-  <properties>
-    <java.version>1.8</java.version>
-  </properties>
   
   <build>
     <plugins>
+    
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -72,7 +81,8 @@
           </archive>
         </configuration>
       </plugin>
-    </plugins>
+
+   </plugins>
   </build>
   
   <artifactId>daily-wisdom</artifactId>

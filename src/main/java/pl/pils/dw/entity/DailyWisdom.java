@@ -20,6 +20,8 @@ public class DailyWisdom {
 	@ManyToOne
 	private Category category;
 	
+	private Long mark = 0l;
+	
 	public User getAuthor() {
 		return author;
 	}
@@ -38,6 +40,15 @@ public class DailyWisdom {
 		this.slug = slug;
 		this.author = author;
 		this.category = category;
+	}
+	
+	public DailyWisdom(String joke, String slug, User author, Category category, Long mark) {
+		super();
+		this.joke = joke;
+		this.slug = slug;
+		this.author = author;
+		this.category = category;
+		this.mark = mark;
 	}
 	
 	public Long getId() {
@@ -62,6 +73,14 @@ public class DailyWisdom {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public Long getMark() {
+		return mark;
+	}
+
+	public void setMark(Long mark) {
+		this.mark = mark;
 	}
 	
 }

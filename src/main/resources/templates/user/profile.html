@@ -1,0 +1,36 @@
+<html layout:decorator="layout" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title>User profile</title>
+</head>
+
+<div layout:fragment="content">
+
+	<h1>User profile</h1>
+	
+	<table class="table table-bordered">
+		<thead class="thead-default">
+		<tr>
+			<th colspan="2"><strong>Your details</strong></th>
+		</tr>
+		</thead>
+		<tr>
+			<th>ID</th>
+			<td th:text="${user.id}"></td>
+		</tr>
+		<tr>
+			<td>Username/email</td>
+			<td th:text="${user.email}"></td>
+		</tr>
+		<tr>
+			<td>First name</td>
+			<td th:text="${user.firstName}"></td>
+		</tr>
+		<tr>
+			<td>Last name</td>
+			<td th:text="${user.lastName}"></td>
+		</tr>
+	</table>
+
+</div>
+
+</html>

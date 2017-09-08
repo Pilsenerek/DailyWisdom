@@ -63,10 +63,14 @@ public class FixtureData implements ApplicationRunner {
 				String email = faker.internet().emailAddress();
 				String firstName = faker.name().firstName();
 				String lastName = faker.name().lastName();
-				User user = new User(email, firstName, lastName);
+				String pass = faker.pokemon().name();
+				User user = new User(email, firstName, lastName, pass, User.Role.ROLE_USER.toString());
 				this.userRepository.save(user);
 				users.add(user);
 			}
+			User testAdmin = new User("test@test.com", "Test", "Pest", "pass", User.Role.ROLE_ADMIN.toString());
+			this.userRepository.save(testAdmin);
+			users.add(testAdmin);
 			
 			//ChuckNorris
 			Set<String> cns = new HashSet<String>(); //to avoid duplicates
@@ -78,7 +82,8 @@ public class FixtureData implements ApplicationRunner {
 				String slug = slg.slugify(joke);
 				Random random = new Random(); 
 				int randomIndex = random.nextInt(users.size());
-				DailyWisdom cn = new DailyWisdom(joke, slug, users.get(randomIndex), categories.get(0));
+				long randomMark = (long)random.nextInt(99);
+				DailyWisdom cn = new DailyWisdom(joke, slug, users.get(randomIndex), categories.get(0), randomMark);
 				this.dailyWisdomRepository.save(cn);
 			}
 			
@@ -115,7 +120,8 @@ public class FixtureData implements ApplicationRunner {
 				String slug = slg.slugify(yoda);
 				Random random = new Random(); 
 				int randomIndex = random.nextInt(users.size());
-				DailyWisdom cn = new DailyWisdom(yoda, slug, users.get(randomIndex), categories.get(1));
+				long randomMark = (long)random.nextInt(99);
+				DailyWisdom cn = new DailyWisdom(yoda, slug, users.get(randomIndex), categories.get(1), randomMark);
 				this.dailyWisdomRepository.save(cn);
 			}
 			

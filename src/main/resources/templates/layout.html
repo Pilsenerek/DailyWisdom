@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
         <meta charset="UTF-8" />
         <title>Daily wisdom</title>
@@ -23,7 +23,19 @@
 	</div>
 	
 	<footer class="footer">
-    	<p class="text-center">My first Spring Boot application | <a href="http://localhost:8081">Home</a> | <a th:href="@{/dw}">See all sentences</a></p>
+    	<p class="text-center">
+    		My first Spring Boot application |
+    		<a href="http://localhost:8081">Home</a> |
+    		<a th:href="@{/dw}">See all sentences</a> |
+    		<span sec:authorize="isAnonymous()"> 
+    			<a th:href="@{/login}">Login</a> |
+    			<a th:href="@{/user/register}" title="Add new sentences and mark exist ones!">Register</a>
+    		</span>
+    		<span sec:authorize="isAuthenticated()"> 
+    			<a th:href="@{/logout}">Logout <span sec:authentication="name">Bob</span></a> |
+    			<a th:href="@{/user/profile}">Your profile</a>
+    		</span>
+    	</p>
     </footer>                        
 	
     </body>

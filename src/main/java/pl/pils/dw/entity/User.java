@@ -3,6 +3,7 @@ package pl.pils.dw.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,22 +17,50 @@ public class User {
 	@Id
 	@GeneratedValue
 	private Long id;
+	
+	@Column(unique = true)
 	private String email;
+	
 	private String firstName;
+	
 	private String lastName;
+	
 	@OneToMany(mappedBy="author")
 	@JsonIgnore
 	private Set<DailyWisdom> dailyWisdoms = new HashSet<DailyWisdom>();
 	
-	public User() {
-		
-	}
+    @Column(nullable = true)
+    private String pass;
+
+    private String role;
+    
+    public enum Role {
+    	ROLE_GUEST,
+        ROLE_USER,
+        ROLE_ADMIN,
+        ROLE_OWNER
+    }
 	
-	public User(String email, String firstName, String lastName) {
+    public User(){
+    	
+    }
+    
+	public User(String email, String firstName, String lastName, String pass) {
 		super();
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.pass = pass;
+		this.role = Role.ROLE_USER.toString();
+	}
+	
+	public User(String email, String firstName, String lastName, String pass, String role) {
+		super();
+    	this.email = email;
+    	this.firstName = firstName;
+    	this.lastName = lastName;
+    	this.pass = pass;
+    	this.role = role;
 	}
 
 	public Long getId() {
@@ -83,6 +112,20 @@ public class User {
 		return this.firstName.concat(" ").concat(this.lastName);
 	}
 	
-	
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 }
