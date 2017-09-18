@@ -18,9 +18,11 @@ import com.github.slugify.Slugify;
 
 import pl.pils.dw.entity.Category;
 import pl.pils.dw.entity.DailyWisdom;
+import pl.pils.dw.entity.DailyWisdomVote;
 import pl.pils.dw.entity.User;
 import pl.pils.dw.repository.CategoryRepository;
 import pl.pils.dw.repository.DailyWisdomRepository;
+import pl.pils.dw.repository.DailyWisdomVoteRepository;
 import pl.pils.dw.repository.UserRepository;
 
 
@@ -30,15 +32,17 @@ public class FixtureData implements ApplicationRunner {
 	private DailyWisdomRepository dailyWisdomRepository;
 	private UserRepository userRepository;
 	private CategoryRepository categoryRepository;
+	private DailyWisdomVoteRepository dailyWisdomVoteRepository;
 
 	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String ddlAuto;
 
 	@Autowired
-	public FixtureData(DailyWisdomRepository chuckNorrisRepository, UserRepository userRepository, CategoryRepository categoryRepository) {
-		this.dailyWisdomRepository = chuckNorrisRepository;
+	public FixtureData(DailyWisdomRepository dailyWisdomRepository, UserRepository userRepository, CategoryRepository categoryRepository, DailyWisdomVoteRepository dailyWisdomVoteRepository) {
+		this.dailyWisdomRepository = dailyWisdomRepository;
 		this.userRepository = userRepository;
 		this.categoryRepository = categoryRepository;
+		this.dailyWisdomVoteRepository = dailyWisdomVoteRepository;
 	}
 
 	public void run(ApplicationArguments args) throws Exception {
@@ -73,6 +77,7 @@ public class FixtureData implements ApplicationRunner {
 			users.add(testAdmin);
 			
 			//ChuckNorris
+			ArrayList<DailyWisdom> dailyWisdoms = new ArrayList<DailyWisdom>();
 			Set<String> cns = new HashSet<String>(); //to avoid duplicates
 			for (int i = 1; i < 99; i++) {
 				String joke = faker.chuckNorris().fact();
@@ -82,9 +87,9 @@ public class FixtureData implements ApplicationRunner {
 				String slug = slg.slugify(joke);
 				Random random = new Random(); 
 				int randomIndex = random.nextInt(users.size());
-				long randomMark = (long)random.nextInt(99);
-				DailyWisdom cn = new DailyWisdom(joke, slug, users.get(randomIndex), categories.get(0), randomMark);
+				DailyWisdom cn = new DailyWisdom(joke, slug, users.get(randomIndex), categories.get(0));
 				this.dailyWisdomRepository.save(cn);
+				dailyWisdoms.add(cn);
 			}
 			
 			//Yoda (faker doesn't support it yet)
@@ -120,12 +125,20 @@ public class FixtureData implements ApplicationRunner {
 				String slug = slg.slugify(yoda);
 				Random random = new Random(); 
 				int randomIndex = random.nextInt(users.size());
-				long randomMark = (long)random.nextInt(99);
-				DailyWisdom cn = new DailyWisdom(yoda, slug, users.get(randomIndex), categories.get(1), randomMark);
+				DailyWisdom cn = new DailyWisdom(yoda, slug, users.get(randomIndex), categories.get(1));
 				this.dailyWisdomRepository.save(cn);
+				dailyWisdoms.add(cn);
 			}
 			
-			
+			//Votes
+			for(DailyWisdom dw : dailyWisdoms){
+				Random random = new Random();
+				int randomVotes = random.nextInt(users.size());
+				for (int i = 1; i < randomVotes; i++) {
+					DailyWisdomVote vote = new DailyWisdomVote(users.get(i), dw);
+					this.dailyWisdomVoteRepository.save(vote);
+				}
+			}
 			
 		}
 	}

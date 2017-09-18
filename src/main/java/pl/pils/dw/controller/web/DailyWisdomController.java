@@ -1,5 +1,6 @@
 package pl.pils.dw.controller.web;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -20,6 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.pils.dw.dto.DailyWisdomSearch;
 import pl.pils.dw.dto.SortView;
 import pl.pils.dw.entity.DailyWisdom;
+import pl.pils.dw.entity.DailyWisdomVote;
+import pl.pils.dw.entity.User;
+import pl.pils.dw.repository.DailyWisdomVoteRepository;
+import pl.pils.dw.repository.UserRepository;
 import pl.pils.dw.service.DailyWisdomService;
 import pl.pils.dw.service.SortUrlService;
 
@@ -28,8 +33,15 @@ public class DailyWisdomController {
 	
 	@Autowired
 	private DailyWisdomService dailyWisdomService;
+	
 	@Autowired
 	private SortUrlService sortUrlService;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private DailyWisdomVoteRepository dailyWisdomVoteRepository;
 	
 	@RequestMapping("/dw")
 	public String list(@ModelAttribute DailyWisdomSearch search, Map<String, Object> model, Pageable pageable){
@@ -61,18 +73,19 @@ public class DailyWisdomController {
 	}
 		
 	@RequestMapping("/dw/{id:[\\d]+}")
-	public String getDailyWisdomById(@PathVariable Long id, Map<String, Object> model){
+	public String getDailyWisdomById(Principal principal, @PathVariable Long id, Map<String, Object> model){
 		DailyWisdom dailyWisdom = this.dailyWisdomService.getDailyWisdom(id);
 		model.put("sentence", dailyWisdom);
+		model.put("isVoted", this.dailyWisdomService.isVoted(principal, dailyWisdom));
 		
 		return "dw/index";
 	}
 	
 	@RequestMapping("/dw/{slug:[a-z0-9-]*}")
-	public String getDailyWisdomBySlug(@PathVariable String slug, Map<String, Object> model){
+	public String getDailyWisdomBySlug(Principal principal, @PathVariable String slug, Map<String, Object> model){
 		DailyWisdom dailyWisdom = this.dailyWisdomService.getDailyWisdomBySlug(slug);
 		model.put("sentence", dailyWisdom);
-		
+		model.put("isVoted", this.dailyWisdomService.isVoted(principal, dailyWisdom));
 		return "dw/index";
 	}
 	
@@ -80,6 +93,19 @@ public class DailyWisdomController {
 	public List<DailyWisdom> getDailyWisdomByAuthor(@PathVariable Long id){
 		
 		return this.dailyWisdomService.getDailyWisdomByUserId(id);
+	}
+	
+	@RequestMapping("/dw/{id}/vote")
+	public String vote(Principal principal, @PathVariable Long id, Map<String, Object> model){
+		User user = this.userRepository.findOneByEmail(principal.getName());
+		DailyWisdom dailyWisdom = this.dailyWisdomService.getDailyWisdom(id);
+		DailyWisdomVote dwVote = new DailyWisdomVote(user, dailyWisdom);
+		this.dailyWisdomVoteRepository.save(dwVote);
+		model.put("sentence", dailyWisdom);
+		model.put("isVoted", true);
+		model.put("isPerformed", true);
+		
+		return "dw/vote";
 	}
 	
 }

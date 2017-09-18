@@ -1,5 +1,6 @@
 package pl.pils.dw.service;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,23 @@ import org.springframework.stereotype.Service;
 
 import pl.pils.dw.dto.DailyWisdomSearch;
 import pl.pils.dw.entity.DailyWisdom;
+import pl.pils.dw.entity.DailyWisdomVote;
+import pl.pils.dw.entity.User;
 import pl.pils.dw.repository.DailyWisdomRepository;
+import pl.pils.dw.repository.DailyWisdomVoteRepository;
+import pl.pils.dw.repository.UserRepository;
 
 @Service
 public class DailyWisdomService {
 	
 	@Autowired
 	private DailyWisdomRepository dailyWisdomRepository;
+	
+	@Autowired
+	private DailyWisdomVoteRepository dailyWisdomVoteRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	public Page<DailyWisdom> getDailyWisdoms(Pageable pageable){
 		Page<DailyWisdom> sentences =  this.dailyWisdomRepository.findAll(pageable);
@@ -75,5 +86,20 @@ public class DailyWisdomService {
 		return sentences;
 	}
 	
+	public boolean isVoted(Principal principal, DailyWisdom dailyWisdom) {
+		if(principal == null){
+			
+			return true;
+		}
+		User user = this.userRepository.findOneByEmail(principal.getName());
+		DailyWisdomVote dailyWisdomVote = this.dailyWisdomVoteRepository.findOneByUserAndDailyWisdom(user, dailyWisdom);
+		if (dailyWisdomVote == null) {
+
+			return false;
+		} else {
+
+			return true;
+		}
+	}
 
 }

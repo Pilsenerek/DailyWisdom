@@ -1,5 +1,6 @@
 package pl.pils.dw.controller.web;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +18,11 @@ public class IndexController {
 	private DailyWisdomService dailyWisdomService;
 	
 	@RequestMapping("/")
-	public String index(Map<String, Object> model){
+	public String index(Principal principal, Map<String, Object> model){
 		List<DailyWisdom> sentences = this.dailyWisdomService.findOneOrderByRand();
 		DailyWisdom sentence = sentences.get(0);
 		model.put("sentence", sentence);
+		model.put("isVoted", this.dailyWisdomService.isVoted(principal, sentence));
 		
 		return "index";
 	}

@@ -1,10 +1,15 @@
 package pl.pils.dw.entity;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class DailyWisdom {
@@ -20,8 +25,9 @@ public class DailyWisdom {
 	@ManyToOne
 	private Category category;
 	
-	private Long mark = 0l;
-	
+    @OneToMany(mappedBy = "dailyWisdom", fetch = FetchType.LAZY)
+    private List<DailyWisdomVote> votes = Collections.emptyList();
+    
 	public User getAuthor() {
 		return author;
 	}
@@ -40,15 +46,6 @@ public class DailyWisdom {
 		this.slug = slug;
 		this.author = author;
 		this.category = category;
-	}
-	
-	public DailyWisdom(String joke, String slug, User author, Category category, Long mark) {
-		super();
-		this.joke = joke;
-		this.slug = slug;
-		this.author = author;
-		this.category = category;
-		this.mark = mark;
 	}
 	
 	public Long getId() {
@@ -75,12 +72,18 @@ public class DailyWisdom {
 		this.category = category;
 	}
 
-	public Long getMark() {
-		return mark;
+	public List<DailyWisdomVote> getVotes() {
+		return votes;
 	}
 
-	public void setMark(Long mark) {
-		this.mark = mark;
+	public void setVotes(List<DailyWisdomVote> votes) {
+		this.votes = votes;
 	}
+	
+	public DailyWisdomVote getVoteByUser(User user){
+		
+		return this.votes.get(0);
+	}
+
 	
 }

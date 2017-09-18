@@ -27,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 		"/dw/**",
                 		"/images/**",
                 		"/css/**",
+                		"/js/**",
                 		"/webjars/**"
                 	).permitAll()
                 

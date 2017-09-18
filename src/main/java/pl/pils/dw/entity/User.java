@@ -1,10 +1,13 @@
 package pl.pils.dw.entity;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -33,6 +36,9 @@ public class User {
     private String pass;
 
     private String role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<DailyWisdomVote> votes = Collections.emptyList();
     
     public enum Role {
     	ROLE_GUEST,
@@ -40,7 +46,7 @@ public class User {
         ROLE_ADMIN,
         ROLE_OWNER
     }
-	
+    
     public User(){
     	
     }
@@ -126,6 +132,14 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public List<DailyWisdomVote> getVotes() {
+		return votes;
+	}
+
+	public void setVotes(List<DailyWisdomVote> votes) {
+		this.votes = votes;
 	}
 
 }

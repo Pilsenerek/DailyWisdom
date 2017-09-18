@@ -7,9 +7,9 @@
         <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen" />
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
         <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
-        
     </head>
     <body>
+
     
 	<div id="wrap">
 	<div id="main" class="container clear-top">
@@ -37,6 +37,8 @@
     		</span>
     	</p>
     </footer>                        
-	
+    
+	<th:block layout:fragment="script"></th:block>
+	    
     </body>
 </html>

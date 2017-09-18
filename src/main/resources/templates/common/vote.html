@@ -1,0 +1,16 @@
+<th:block th:fragment="vote">
+	<div data-fill-in="vote" class="d-inline" th:attr="data-fill-out=${isPerformed == null ? '' : 'vote'}">
+		<strong th:text="${sentence.votes.size()}"></strong>
+		<th:block sec:authorize="isAuthenticated()">
+			<th:block th:if="${isVoted}">
+				<span title="You've already voted"><span class="fa fa-thumbs-o-up text-muted"></span></span>
+			</th:block>
+			<th:block th:unless="${isVoted}">
+				<a data-vote="" th:href="@{/dw/{id}/vote(id=${sentence.id})}" title="Vote for this sentence"><span class="fa fa-thumbs-o-up"></span></a>
+			</th:block>
+		</th:block>
+		<th:block sec:authorize="isAnonymous()">
+			<span title="Login/register if you want to vote"><span class="fa fa-thumbs-o-up text-muted"></span></span>
+		</th:block>
+	</div>
+</th:block>
