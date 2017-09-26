@@ -54,7 +54,7 @@ public class FixtureData implements ApplicationRunner {
 			
 			//categories entity
 			ArrayList<Category> categories = new ArrayList<Category>();
-			categories.add(new Category("Chuck Norris", "chuck.jpg"));
+			categories.add(new Category("Chuck Norris", "chuck.png"));
 			categories.add(new Category("Yoda Master", "yoda.png"));
 			categories.add(new Category("Other", "other.png"));
 			for(Category category : categories){

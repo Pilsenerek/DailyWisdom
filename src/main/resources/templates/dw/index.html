@@ -11,6 +11,13 @@
 
 	<h1>Daily wisdom details</h1>
 	
+	<div sec:authorize="isAuthenticated()" class="form-inline mt-1 mb-1">
+		<a th:if="${#authentication.getPrincipal().getUsername()} == ${sentence.author.email}" role="button" class="btn btn-warning" title="Edit" th:href="@{/pa/dw/{id}/edit(id=${sentence.id})}">Edit</a>
+		<a th:unless="${#authentication.getPrincipal().getUsername()} == ${sentence.author.email}" role="button" class="btn btn-warning disabled" href="#">Edit</a>
+		<a th:if="${#authentication.getPrincipal().getUsername()} == ${sentence.author.email}" role="button" class="btn btn-danger ml-1" data-confirm="Are you sure you want to delete?" title="Delete" th:href="@{/pa/dw/{id}/delete(id=${sentence.id})}">Delete</a>
+		<a th:unless="${#authentication.getPrincipal().getUsername()} == ${sentence.author.email}" role="button" class="btn btn-danger ml-1 disabled" href="#">Delete</a>
+	</div>
+	
 	<table class="table table-bordered">
 		<thead class="thead-default">
 		<tr>

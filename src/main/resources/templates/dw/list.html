@@ -7,10 +7,11 @@
 
 	<h1>Daily wisdoms list</h1>
 	
-	<form class="form-inline top-5" action="#" th:object="${searchForm}" method="get">
+	<form class="form-inline mt-1 mb-1" action="#" th:object="${searchForm}" method="get">
     	<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="search" placeholder="search text" th:field="*{search}" />
 		<button type="submit" class="btn btn-primary">Search</button>
 		<a th:href="@{/dw}" class="btn btn-primary ml-1">Reset</a>
+		<a sec:authorize="isAuthenticated()" th:href="@{/pa/dw/add}" class="btn btn-success ml-1">Add</a>
 	</form>
 	
 	<table class="table table-bordered table-striped top-5">
@@ -36,6 +37,7 @@
 					<i class="fa" th:classappend="${order.equals('ASC')} ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" aria-hidden="true"></i>
 				</a>
 			</th>
+			<th sec:authorize="isAuthenticated()">Action</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -51,6 +53,12 @@
    			</td>
    			<td class="middle">
    				<a class="text-nowrap" th:text="${dailyWisdom.author.fullName}"></a>
+   			</td>
+   			<td sec:authorize="isAuthenticated()" class="align-middle text-nowrap">
+   				<a th:if="${#authentication.getPrincipal().getUsername()} == ${dailyWisdom.author.email}" role="button" class="btn btn-warning btn-sm" title="Edit" th:href="@{/pa/dw/{id}/edit(id=${dailyWisdom.id})}">Edit</a>
+   				<a th:unless="${#authentication.getPrincipal().getUsername()} == ${dailyWisdom.author.email}" role="button" class="btn btn-warning btn-sm disabled" href="#">Edit</a>
+   				<a th:if="${#authentication.getPrincipal().getUsername()} == ${dailyWisdom.author.email}" role="button" class="btn btn-danger btn-sm ml-1" title="Delete" data-confirm="Are you sure you want to delete?" th:href="@{/pa/dw/{id}/delete(id=${dailyWisdom.id})}">Delete</a>
+   				<a th:unless="${#authentication.getPrincipal().getUsername()} == ${dailyWisdom.author.email}" role="button" class="btn btn-danger btn-sm ml-1 disabled" href="#">Delete</a>
    			</td>
 		</tr>
 		</tbody>
