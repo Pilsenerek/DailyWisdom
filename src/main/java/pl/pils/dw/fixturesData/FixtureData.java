@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.github.javafaker.Faker;
@@ -33,16 +34,24 @@ public class FixtureData implements ApplicationRunner {
 	private UserRepository userRepository;
 	private CategoryRepository categoryRepository;
 	private DailyWisdomVoteRepository dailyWisdomVoteRepository;
-
+	private PasswordEncoder passwordEncoder;
+	
 	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String ddlAuto;
 
 	@Autowired
-	public FixtureData(DailyWisdomRepository dailyWisdomRepository, UserRepository userRepository, CategoryRepository categoryRepository, DailyWisdomVoteRepository dailyWisdomVoteRepository) {
+	public FixtureData(
+			DailyWisdomRepository dailyWisdomRepository,
+			UserRepository userRepository,
+			CategoryRepository categoryRepository,
+			DailyWisdomVoteRepository dailyWisdomVoteRepository,
+			PasswordEncoder passwordEncoder
+			) {
 		this.dailyWisdomRepository = dailyWisdomRepository;
 		this.userRepository = userRepository;
 		this.categoryRepository = categoryRepository;
 		this.dailyWisdomVoteRepository = dailyWisdomVoteRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public void run(ApplicationArguments args) throws Exception {
@@ -68,11 +77,11 @@ public class FixtureData implements ApplicationRunner {
 				String firstName = faker.name().firstName();
 				String lastName = faker.name().lastName();
 				String pass = faker.pokemon().name();
-				User user = new User(email, firstName, lastName, pass, User.Role.ROLE_USER.toString());
+				User user = new User(email, firstName, lastName, this.passwordEncoder.encode(pass), User.Role.ROLE_USER.toString());
 				this.userRepository.save(user);
 				users.add(user);
 			}
-			User testAdmin = new User("test@test.com", "Test", "Pest", "pass", User.Role.ROLE_ADMIN.toString());
+			User testAdmin = new User("test@test.com", "Test", "Pest", this.passwordEncoder.encode("pass"), User.Role.ROLE_ADMIN.toString());
 			this.userRepository.save(testAdmin);
 			users.add(testAdmin);
 			

@@ -3,10 +3,12 @@ package pl.pils.dw.config;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
@@ -15,7 +17,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	DataSource dataSource;
+	private DataSource dataSource;
+	
+	@Autowired
+    private StandardPasswordEncoder StandardPasswordEncoder;
 	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -48,13 +53,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-      auth.jdbcAuthentication().dataSource(dataSource)
-     .usersByUsernameQuery("select email,pass,1 from user where email=?")
-     .authoritiesByUsernameQuery("select email,role from user where email=?");
-
+    	auth
+      		.jdbcAuthentication()
+      		.dataSource(dataSource)
+      		.usersByUsernameQuery("select email,pass,1 from user where email=?")
+      		.authoritiesByUsernameQuery("select email,role from user where email=?")
+      		.passwordEncoder(this.StandardPasswordEncoder)
+      	;
     } 
     
-    
+    @Bean
+    public StandardPasswordEncoder standardPasswordEncoder() {
+    	
+		return new StandardPasswordEncoder();
+    }
 
 /*    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

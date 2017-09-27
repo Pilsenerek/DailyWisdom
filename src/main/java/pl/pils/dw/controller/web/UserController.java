@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,9 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@RequestMapping("/profile")
 	public String profile(Principal principal, Map<String, Object> model){
@@ -40,10 +44,11 @@ public class UserController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@Valid Register register, BindingResult bindingResult, Map<String, Object> model, RedirectAttributes attributes) {
 		if (bindingResult.hasErrors()) {
-
+			System.out.println("qwerty " + register.getFirstName());
+			
 			return "user/register";
 		}
-		User newUser = new User(register.getEmail(), register.getFirstName(), register.getLastName(), register.getPass()); 
+		User newUser = new User(register.getEmail(), register.getFirstName(), register.getLastName(), this.passwordEncoder.encode(register.getPass())); 
 		this.userRepository.save(newUser);
 		attributes.addFlashAttribute("msg", "Your account has just been created, try to sign in");
 		

@@ -22,7 +22,19 @@ public class Register {
 	@Size(min=3, max=99)
 	@NotNull
 	private String pass;
-
+	
+	@Size(min=3, max=99)
+	@NotNull(message="Password confirmation has to be the same")
+	private String confirmPass;
+	
+	private void checkPassword() {
+		if (this.pass == null || this.confirmPass == null) {
+			return;
+		} else if (!this.pass.equals(confirmPass)) {
+			this.confirmPass = null;
+		}
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -53,6 +65,16 @@ public class Register {
 
 	public void setPass(String pass) {
 		this.pass = pass;
+		this.checkPassword();
+	}
+
+	public String getConfirmPass() {
+		return confirmPass;
+	}
+
+	public void setConfirmPass(String confirmPass) {
+		this.confirmPass = confirmPass;
+		this.checkPassword();
 	}
 	
 }
