@@ -1,37 +1,32 @@
 <html layout:decorator="layout" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<title>User register</title>
+	<title>User edit</title>
 </head>
 
 <div layout:fragment="content">
 
 	<div class="col-md-6 container">
 	
-	<h1>User register</h1>
+	<h1>User edit</h1>
 		
 
-		<form method="post" th:action="@{/user/register}" th:object="${registerForm}">
+		<form method="post" th:action="@{/pa/user/profile/edit}" th:object="${profileForm}">
 			
-			<div class="form-group" th:classappend="${#fields.hasErrors('email')} ? has-danger : ''">
-				<label class="control-label required" for="email">Email address</label>
-				<div class="input-group">
-					<span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-					<input th:field="*{email}" class="form-control" type="text" placeholder="email" required="required" name="email" id="email" />
-				</div>
-				<div class="form-control-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</div>
-			</div>
+			<ul class="list-group mt-1 mb-1" th:if="${#fields.hasErrors('global')}">
+  				<li class="list-group-item list-group-item-danger" th:each="err : ${#fields.errors('global')}" th:text="${err}">Input is incorrect</li>
+			</ul>
 			
 			<div class="form-group" th:classappend="${#fields.hasErrors('firstName')} ? has-danger : ''">
-				<label class="control-label required" for="firstName">First name</label>
+				<label class="control-label" for="firstName">First name</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-user"></i></span>
-					<input th:field="*{firstName}"  type="text" placeholder="first name" name="firstName" id="firstName" class="form-control" />
+					<input th:field="*{firstName}" type="text" placeholder="first name" name="firstName" id="firstName" class="form-control" />
 				</div>
 				<div class="form-control-feedback" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</div>
 			</div>
 			
 			<div class="form-group" th:classappend="${#fields.hasErrors('lastName')} ? has-danger : ''">
-				<label class="control-label required" for="firstName">Last name</label>
+				<label class="control-label" for="firstName">Last name</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-user"></i></span>
 					<input th:field="*{lastName}"  type="text" placeholder="last name" name="lastName" id="lastName" class="form-control" />
@@ -40,19 +35,19 @@
 			</div>
 
 			<div class="form-group" th:classappend="${#fields.hasErrors('pass')} ? has-danger : ''">
-				<label class="control-label required" for="pass">Password</label>
+				<label class="control-label" for="pass">Password</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-					<input th:field="*{pass}"  type="password" placeholder="password" required="required" name="pass" id="pass" class="form-control" />
+					<input th:field="*{pass}"  type="password" placeholder="password" name="pass" id="pass" class="form-control" />
 				</div>
 				<div class="form-control-feedback" th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}">Name Error</div>
 			</div>
 			
 			<div class="form-group" th:classappend="${#fields.hasErrors('confirmPass')} ? has-danger : ''">
-				<label class="control-label required" for="confirmPass">Confirm password</label>
+				<label class="control-label" for="confirmPass">Confirm password</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-					<input th:field="*{confirmPass}"  type="password" placeholder="password" required="required" name="confirmPass" id="confirmPass" class="form-control" />
+					<input th:field="*{confirmPass}"  type="password" placeholder="password" name="confirmPass" id="confirmPass" class="form-control" />
 				</div>
 				<div class="form-control-feedback" th:if="${#fields.hasErrors('confirmPass')}" th:errors="*{confirmPass}">Name Error</div>
 			</div>

@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;;
 
-public class Register {
+public class RegisterForm {
 	
 	@Size(min=5, max=99)
 	@NotNull
