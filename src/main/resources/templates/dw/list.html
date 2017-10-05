@@ -37,6 +37,11 @@
 					<i class="fa" th:classappend="${order.equals('ASC')} ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" aria-hidden="true"></i>
 				</a>
 			</th>
+			<th class="text-nowrap">Votes
+				<a class="btn btn-secondary btn-sm" th:classappend="${sort.equals('votes')} ? 'active' : ''" th:href="${sortUrls.votes}">
+					<i class="fa" th:classappend="${order.equals('ASC')} ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" aria-hidden="true"></i>
+				</a>
+			</th>
 			<th sec:authorize="isAuthenticated()">Action</th>
 		</tr>
 		</thead>
@@ -52,7 +57,10 @@
    				<img height="50" th:src="@{'/images/' + ${dailyWisdom.category.image}}" th:title="${dailyWisdom.category.name}" />
    			</td>
    			<td class="middle">
-   				<a class="text-nowrap" th:text="${dailyWisdom.author.fullName}"></a>
+   				<span class="text-nowrap" th:text="${dailyWisdom.author.fullName}"></span>
+   			</td>
+   			<td class="middle text-right">
+   				<span th:text="${dailyWisdom.votes.size()}"></span>
    			</td>
    			<td sec:authorize="isAuthenticated()" class="align-middle text-nowrap">
    				<a th:if="${#authentication.getPrincipal().getUsername()} == ${dailyWisdom.author.email}" role="button" class="btn btn-warning btn-sm" title="Edit" th:href="@{/pa/dw/{id}/edit(id=${dailyWisdom.id})}">Edit</a>

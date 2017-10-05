@@ -18,6 +18,7 @@ public class Category {
 	private Long id;
 	private String name;
 	private String image;
+	
 	@OneToMany(mappedBy="category")
 	@JsonIgnore
 	private Set<DailyWisdom> dailyWisdoms = new HashSet<DailyWisdom>();

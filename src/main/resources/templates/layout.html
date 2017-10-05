@@ -3,18 +3,21 @@
     <head>
         <meta charset="UTF-8" />
         <title>Daily wisdom</title>
-        <link th:href="@{/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css}" rel="stylesheet" media="screen" />
+        <link th:href="@{/webjars/bootstrap/4.0.0-beta/css/bootstrap.min.css}" rel="stylesheet" media="screen" />
         <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen" />
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
         <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
-        <script th:src="@{/webjars/tether/1.4.0/js/tether.min.js}"></script>
-        <script th:src="@{/webjars/bootstrap/4.0.0-alpha.6-1/js/bootstrap.min.js}"></script>
+        <script th:src="@{/webjars/popper.js/1.12.5/dist/umd/popper.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js}"></script>
         <script th:src="@{/js/common.js}"></script>
     </head>
     <body>
 
     
 	<div id="wrap">
+	
+	<th:block th:include="common/navigation :: navigation(test)"></th:block>
+	
 	<div id="main" class="container clear-top">
 	
 		<div class="alert alert-info mt-1 mb-1" th:if="${msg}">
@@ -31,20 +34,7 @@
 	</div>
 	
 	<footer class="footer">
-    	<p class="text-center">
-    		My first Spring Boot application |
-    		<a href="http://localhost:8081">Home</a> |
-    		<a th:href="@{/dw}">See all sentences</a> |
-    		<span sec:authorize="isAnonymous()"> 
-    			<a th:href="@{/login}">Login</a> |
-    			<a th:href="@{/user/register}" title="Add new sentences and mark exist ones!">Register</a>
-    		</span>
-    		<span sec:authorize="isAuthenticated()"> 
-    			<a th:href="@{/logout}">Logout <span sec:authentication="name">Bob</span></a> |
-    			<a th:href="@{/user/profile}">Your profile</a> |
-    			<a th:href="@{/pa/dw/add}">Add sentence</a>
-    		</span>
-    	</p>
+    	<p class="text-center">My first Spring Boot application</p>
     </footer>                        
     
 	<th:block layout:fragment="script"></th:block>

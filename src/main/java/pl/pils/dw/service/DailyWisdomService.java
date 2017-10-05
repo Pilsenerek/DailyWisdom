@@ -2,13 +2,11 @@ package pl.pils.dw.service;
 
 import java.security.Principal;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import pl.pils.dw.dto.DailyWisdomSearch;
 import pl.pils.dw.entity.DailyWisdom;
 import pl.pils.dw.entity.DailyWisdomVote;
@@ -41,7 +39,7 @@ public class DailyWisdomService {
 			return this.dailyWisdomRepository.findAll(pageable);
 
 		} else {
-
+			
 			return this.dailyWisdomRepository.findByJokeContaining(search.getSearch(), pageable);
 		}
 	}

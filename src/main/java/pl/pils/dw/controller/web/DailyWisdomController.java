@@ -42,14 +42,8 @@ public class DailyWisdomController {
 	
 	@RequestMapping("/dw")
 	public String list(@ModelAttribute DailyWisdomSearch search, Map<String, Object> model, Pageable pageable){
-		//@todo separate sort definitions
-		Map<String, String> sortKeys = new LinkedHashMap<String, String>();
-		sortKeys.put("id", "id"); //first = default sort key
-		sortKeys.put("text", "joke");
-		sortKeys.put("category", "category.name");
-		sortKeys.put("author", "author.lastName");
 		List<String> keepKeys = new ArrayList<String>(Arrays.asList("search"));
-		SortView sortView = this.sortUrlService.getSortView(sortKeys, keepKeys);
+		SortView sortView = this.sortUrlService.getSortView(this.prepareSortKeys(), keepKeys);
 		final PageRequest page = new PageRequest(
 				  pageable.getPageNumber(),
 				  pageable.getPageSize(),
@@ -60,7 +54,6 @@ public class DailyWisdomController {
 		Page<DailyWisdom> dailyWisdoms = this.dailyWisdomService.getDailyWisdoms(page, search);
 		
 		model.put("page", dailyWisdoms);
-		model.put("persons", dailyWisdoms);
 		model.put("sortUrls", sortView.getSortUrls());
 		model.put("order", sortView.getOrder());
 		model.put("sort", sortView.getKey());
@@ -98,11 +91,23 @@ public class DailyWisdomController {
 		DailyWisdom dailyWisdom = this.dailyWisdomService.getDailyWisdom(id);
 		DailyWisdomVote dwVote = new DailyWisdomVote(user, dailyWisdom);
 		this.dailyWisdomVoteRepository.save(dwVote);
+		dailyWisdom.getVotes().add(dwVote);
 		model.put("sentence", dailyWisdom);
 		model.put("isVoted", true);
 		model.put("isPerformed", true);
 		
 		return "dw/vote";
+	}
+	
+	private Map<String, String> prepareSortKeys() {
+		Map<String, String> sortKeys = new LinkedHashMap<String, String>();
+		sortKeys.put("id", "id"); // first = default sort key
+		sortKeys.put("text", "joke");
+		sortKeys.put("category", "category.name");
+		sortKeys.put("author", "author.lastName");
+		sortKeys.put("votes", "votesNumber");
+
+		return sortKeys;
 	}
 	
 }
